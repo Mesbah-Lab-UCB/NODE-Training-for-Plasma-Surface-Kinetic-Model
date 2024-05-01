@@ -4,6 +4,13 @@
 Created on Mon Apr 15 15:48:34 2024
 
 @author: shoubhaniknath
+
+    Python script to simulate cycle dynamics of Si ALE with Cl/Ar using learned model for the transition probabilities.
+    The script outputs plots for the Cl uptake and distance of Si etched at different conditions of incident ion fluence 
+    and ion energy. 
+    
+    It must be noted that for accurate solutions, the guess velocity needs to be different for each condition, which has 
+    not been implemented here. 
 """
 
 import torch
@@ -18,10 +25,10 @@ from torchdiffeq import odeint
 
 ## Define some system parameters
 tsim = 30.0                                                 # tsim=0.7 is Non-dimensional time
-D = torch.tensor(1e-19, dtype=torch.float32)              # Units of m^2/s: Ho, Surf Sci (1978) 253-263
-A = 1063e-20            # Area of surface (from simulation) in m^2
-n_Si = torch.tensor(5e28, dtype=torch.float32)             # Density of Si in number/m^3
-n_Surface = torch.tensor(72/1063e-20, dtype=torch.float32) # 72 atoms in plane Vella et al, J Vac Sci Technol (2022)
+D = torch.tensor(1e-19, dtype=torch.float32)                # Units of m^2/s: Ho, Surf Sci (1978) 253-263
+A = 1063e-20                                                # Area of surface (from simulation) in m^2
+n_Si = torch.tensor(5e28, dtype=torch.float32)              # Density of Si in number/m^3
+n_Surface = torch.tensor(72/1063e-20, dtype=torch.float32)  # 72 atoms in plane Vella et al, J Vac Sci Technol (2022)
 
 class WeightedSigmoid(nn.Module):
     def __init__(self, in_feature):
