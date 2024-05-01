@@ -16,7 +16,8 @@ Created on Mon Mar 25 15:18:52 2024
     and backpropagate through the neural networks for rate constants and train the network parameters. 
 
     The MD data which has been used as ground truth is generated through a custom C++ code from the Graves 
-    group. This MD code introduces one species in each timestep and outputs configuration files for each 
+    group. To train the ML model, we need to conduct ensemble simulations and take ensemble averages.
+    This MD code introduces one species in each timestep and outputs configuration files for each 
     timestep. Thus, the number of configuration files equals the ion fluence, i.e., the length of the time 
     series data is equal to the ion fluence. The system of coupled  ODE-PDE are non-dimensionalised. For 
     all the conditions, it is assumed that the corresponding experimental time is 30s (MD time series is 
@@ -111,12 +112,12 @@ weight_list = list(kc1.parameters())+list(kc3.parameters())+list(ks3.parameters(
 optimizer = torch.optim.Adagrad(params=weight_list, lr=0.01)
 
 ## Define some system parameters
-tsim = torch.tensor(30.0, dtype=torch.float32)            # 30s of bombardment cycle Park et al, (2005)
-D = torch.tensor(1e-19, dtype=torch.float32)              # Units of m^2/s: Ho, Surf Sci (1978) 253-263
-A = 1063e-20            # Area of surface (from simulation) in m^2
-n_Si = torch.tensor(5e28, dtype=torch.float32)             # Density of Si in number/m^3
-n_Surface = torch.tensor(72/1063e-20, dtype=torch.float32) # 72 atoms in plane Vella et al, J Vac Sci Technol (2022)
-Nc = torch.tensor(A * 5.8e18, dtype=torch.float32)         # Simulation area = 1063 A^2: Vella et al, J Vac Sci Technol (2022). Active site conc 5.8e18 molecules/m^2: Gao, J Chem Phys (1993)
+tsim = torch.tensor(30.0, dtype=torch.float32)                 # 30s of bombardment cycle Park et al, (2005)
+D = torch.tensor(1e-19, dtype=torch.float32)                   # Units of m^2/s: Ho, Surf Sci (1978) 253-263
+A = 1063e-20                                                   # Area of surface (from simulation) in m^2
+n_Si = torch.tensor(5e28, dtype=torch.float32)                 # Density of Si in number/m^3
+n_Surface = torch.tensor(72/1063e-20, dtype=torch.float32)     # 72 atoms in plane Vella et al, J Vac Sci Technol (2022)
+Nc = torch.tensor(A * 5.8e18, dtype=torch.float32)             # Simulation area = 1063 A^2: Vella et al, J Vac Sci Technol (2022). Active site conc 5.8e18 molecules/m^2: Gao, J Chem Phys (1993)
 
 ## Space domain discretization parameters
 xmin = 0; xmax = 0.5
