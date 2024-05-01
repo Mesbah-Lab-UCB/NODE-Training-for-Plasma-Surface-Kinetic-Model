@@ -9,8 +9,7 @@ Created on Mon Apr 15 15:48:34 2024
     The script outputs plots for the Cl uptake and distance of Si etched at different conditions of incident ion fluence 
     and ion energy. 
     
-    It must be noted that for accurate solutions, the guess velocity needs to be different for each condition, which has 
-    not been implemented here. 
+    For accurate results, one must use different guess veloities for different energy conditions. 
 """
 
 import torch
@@ -20,7 +19,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import sys
 sys.path.append('/Users/shoubhaniknath/my_modules/')
-import ale_learning_2 as ALE
+import ale_learning as ALE
 from torchdiffeq import odeint
 
 ## Define some system parameters
@@ -131,9 +130,8 @@ for count, energy in enumerate(energies):
     
     Nc = torch.tensor(A * 5.8e18, dtype=torch.float32)         # Simulation area = 1063 A^2: Vella et al, J Vac Sci Technol (2022). Active site conc 5.8e18 molecules/m^2: Gao, J Chem Phys (1993)
     n0 = Nc
-    v_guess = 1e-11
-    #v_guess = [0.2e-11, 0.7e-11, 1.2e-11, 1.8e-11]
-    time = torch.tensor(np.linspace(0.0, tsim / (D/v_guess**2), steps))
+    v_guess = [0.2e-11, 0.7e-11, 1.2e-11, 1.8e-11]
+    time = torch.tensor(np.linspace(0.0, tsim / (D/v_guess[count]**2), steps))
     c_pred = torch.empty((len(time),3))
     cumulative_time = torch.empty((len(time)))
     cumulative_etch = torch.empty((len(time)))
@@ -177,7 +175,7 @@ for count, energy in enumerate(energies):
         p0[...,1] = 0.              # Bulk gas evacuated before Cl cycle. 
         p0[...,2] = 1-p0[...,0]
 
-    t_final = cumulative_time[100:] * (D/v_guess**2)
+    t_final = cumulative_time[100:] * (D/v_guess[count]**2)
     c_final = c_pred[100:,:]
     
     ax1.plot(t_final, (c_final[:,0]+c_final[:,2])/n0)
