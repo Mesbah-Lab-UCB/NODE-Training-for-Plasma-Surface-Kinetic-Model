@@ -5,16 +5,29 @@ Created on Thu Mar 21 13:46:54 2024
 
 @author: shoubhaniknath
     
-    This is a more general code than ale_learning.py
-    The two modules are the same, but in this one, we can train the neural network
-    model for different model inputs:
-        1) Only ion energies
-        2) Ion energies and ion fluences
-        3) Ion energies and state probability values
-        4) Ion energies, ion fluences, and state probability values
-    
-    It should be noted that ion energy must always be one of the inputs to the 
-    neural network
+    This is a module related to plasma processing (ALE & RIE) for preprocessing data for neural network training, ODE function for space discretisation of a 
+    drift-diffusion equation to pass to a ODE solver (used to train neural network in a NODE-framework), and postprocessing of trained model.
+
+    The methods in this module are tailored for the surface-kinetic-drift-diffusion model that has been developed in the Mesbah Lab. This model is a system 
+    of coupled ODEs and one PDE (diffusion in solid substrate), and the ODEs are a system of master equations. The transition probabilities of the master 
+    equation are represented as neural networks, which need to be trained. The training procedure consists of solving the system of ODEs, and computing the 
+    loss from the solution and the MD data. 
+
+    This code has been created with the aim to provide the user with the option to choose whether to include the ion fluence and the state values themselves 
+    in the feature vector for the neural network. States are basically the dependent variables of the ODE, and are included when the master equation itself is 
+    non-linear in nature. Ion energy is a required feature, as the transition probability must depend on the value of the incident ion energy. However, as 
+    the code currently stands, we cannot include the states as features to the neural network, and more work needs to be done in order to include the states
+    as features as well. For Si ALE, including the states as features is not required. 
+
+    The data from MD is in tabular form with different .csv files for different conditions, and each .csv file contains time series data of the occupation 
+    number at different states. This data needs to be properly preprocessed in order to feed it to the neural network. If the fluence is included, then the 
+    data is a 3D tensor, but more importantly, preprocessing needs to be done, since the size of the time series will change with the fluence value. More 
+    details are provided in the method. An index of the methods is given below:
+
+    Data Preprocessing: ConcatSimData, DataPreSiALE, MapTime
+    ODE function: SiALE_ODEFunc
+    Postprocessing: ModelEvaluation, StateProbPlot, GoodnessOfFit
+    Miscellaneous: others
 """
 
 import torch
