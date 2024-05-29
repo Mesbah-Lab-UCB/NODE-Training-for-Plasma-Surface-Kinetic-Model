@@ -1,0 +1,6 @@
+This folder contains ensemble average MD data at different ion fluence and ion energy conditions. 
+The MD data is generated using a C++ code from the Graves group. 
+The data has been preprocessed, to calculate occupation numbers of different states of Cl at different times
+Each file is a .csv file which contains tabular time series data. 
+The states are differentiated using the coordination number of Cl, with Cl<=2 implying Cl at surface, Cl in mixed layer otherwise.
+Three realizations of each condition was taken and then added to take the ensemble average.
