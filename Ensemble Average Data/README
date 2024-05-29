@@ -1,6 +1,8 @@
-This folder contains ensemble average MD data at different ion fluence and ion energy conditions. 
+This folder contains ensemble average MD data at different ion fluence and ion energy conditions for Si RIE with F and Ar. 
 The MD data is generated using a C++ code from the Graves group. 
-The data has been preprocessed, to calculate occupation numbers of different states of Cl at different times
+The data has been preprocessed, to calculate occupation numbers of different states of F at different times
 Each file is a .csv file which contains tabular time series data. 
-The states are differentiated using the coordination number of Cl, with Cl<=2 implying Cl at surface, Cl in mixed layer otherwise.
+The states are differentiated using the coordination number of F, with Cl<=1 implying F at surface, F in mixed layer otherwise.
 Three realizations of each condition was taken and then added to take the ensemble average.
+Training Data was generated for fluence between 500 and 1000, intervals of 25, and for energy between 20eV to 80eV in intervals of 2eV
+Flux ratio of F to Ar was kept constant throughout as 5.
