@@ -627,21 +627,26 @@ def GoodnessOfFit(y_actual, y_pred):
     return metric.compute
 
 
-def StateProbPlot(t, y_pred, y_actual, energy_list, no_of_impacts, state_list, colors=['b','g','r']):
+def StateProbPlot(t, y_pred, y_actual, energy_list, no_of_impacts, state_list, D, v_guess, colors=['b','g','r']):
     
     # y here is 3D tensor with dimensions impacts x energies x variable values (wrong, change)
     # t can be dimensional time or non-dimensional time
    
     fig, ax = plt.subplots()
+
+    time_scale = D/v_guess**2
+    # This step is so that we plot lesser number of the actual data points to promote visibility
+    index_nf = 50 * np.array(range((round(len(t)/50)))); t_sim = t[index_nf] * time_scale
     
     for c,v in enumerate(energy_list):
         legend_list = []
         for i in range(prob_no):
-            ax.plot(t.cpu().detach().numpy(), y_pred[...,c,i].cpu().detach().numpy(), color=colors[i])
-            ax.scatter(t.cpu().detach().numpy(), y_actual[...,c,i].cpu().detach().numpy(), color=colors[i], facecolors='none')
+            ax.plot((t*time_scale).cpu().detach().numpy(), y_pred[...,c,i].cpu().detach().numpy(), color=colors[i])
+            ax.scatter(t_sim.cpu().detach().numpy(), y_actual[index_nf,:,c,i].cpu().detach().numpy(), color=colors[i], facecolors='none')
             legend_list.append(state_list[i]+' Predicted')
             legend_list.append(state_list[i]+' Simulation')
-        ax.set(title=no_of_impacts+' impacts '+v+' energy', xlabel='Time', ylabel='Probability')
+        #ax.set(title=no_of_impacts+' impacts '+v+' energy', xlabel='Time', ylabel='Probability')
+        ax.set(xlabel='Time (s)', ylabel='Probability')
         ax.legend(legend_list)
         fig.show()
             
