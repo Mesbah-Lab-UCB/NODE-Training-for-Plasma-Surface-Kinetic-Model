@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 import sys
 sys.path.append("/Users/shoubhaniknath/my_modules/")
-import ale_learning_RIE_3 as ALE
+import ale_learning_RIE as ALE
 import matplotlib.pyplot as plt
 
 
