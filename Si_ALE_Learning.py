@@ -51,7 +51,7 @@ import numpy as np
 import sys
 import matplotlib.pyplot as plt
 sys.path.append("/global/home/users/shoubhaniknath/Python_Codes/")
-import ale_learning as ALE
+import ale_learning_ALE as ALE
 import time as runtime
 import random
 
