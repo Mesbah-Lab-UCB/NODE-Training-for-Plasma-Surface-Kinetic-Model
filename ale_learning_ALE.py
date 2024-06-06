@@ -340,7 +340,8 @@ def SiALE_ODEfunc(t, y, args):
     
     if not include_fluence and not include_states:
         # If only energy is the input. Change size to len(energy)x1 for NN
-        model_input = energy_vec.unsqueeze(1)    
+        model_input = energy_vec.unsqueeze(1)   
+        m=1
     elif include_fluence and not include_states:
         # Both ion energy and ion impact are inputs
         # The input is all combinations of energy and fluence. Shape is len(energy)*len(fluence) x 2
