@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 from torchdiffeq import odeint
 import sys
 sys.path.append("/Users/shoubhaniknath/my_modules/")
-import ale_learning as ALE
+import ale_learning_ALE as ALE
 import random
 
 ## Define the neural network model
