@@ -335,7 +335,15 @@ def SiALE_ODEfunc(t, y, args):
     # From simulation we only have the fluence, but in the equations, we have flux
     fluence = impact_vec / A
     flux = fluence / tsim
-    
+
+
+    '---IMPORTANT !!!!---'
+    ' I am using the formulation in the below commented lines. It is to be checked whether this formulation gives the '
+    ' same result as the previous one '
+    # combined_fluence_energy = torch.zeros(len(energy)*len(impact),2)
+    # combined_fluence_energy[:,0] = impact.repeat(len(energy))
+    # for n in range(len(energy)):
+    #    combined_fluence_energy[n*len(impact):(n+1)*len(impact),1] = energy[n]
     combined_fluence_energy = torch.stack((impact_vec.repeat(len(energy_vec)), energy_vec.repeat(len(impact_vec))), dim=1)
     
     if not include_fluence and not include_states:
